@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-cn">
     
 <head>
     <meta charset="UTF-8">
@@ -10,14 +10,17 @@
     <meta name="author" content="王小虎">
     
     
+        <link rel="icon" href="http://yoursite.com/assets/images/cover.jpg">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"Website","@id":"http://yoursite.com","author":{"@type":"Person","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"]},"name":"david的空间","description":"我是小白兔","url":"http://yoursite.com"}</script>
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"Website","@id":"http://yoursite.com","author":{"@type":"Person","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"1.jpg"},"name":"david的空间","description":"我是小白兔","url":"http://yoursite.com"}</script>
     <meta name="description" content="我是小白兔">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="mailto">
 <meta property="og:url" content="http://yoursite.com/mailto/index.html">
 <meta property="og:site_name" content="david的空间">
 <meta property="og:description" content="我是小白兔">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-16T13:25:36.000Z">
 <meta property="article:modified_time" content="2020-03-16T13:25:36.198Z">
 <meta property="article:author" content="王小虎">
@@ -26,6 +29,8 @@
     
         
     
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/1.jpg"/>
     
     
     
@@ -50,8 +55,12 @@
 
 
     
+        
+            
+        
+    
 
-<header id="header" data-behavior="3">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -67,9 +76,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Öffne den Link: /#about"
+                aria-label="打开链接: /#about"
             >
         
+        
+            <img class="header-picture" src="/assets/images/1.jpg" alt="作者的图片"/>
         
         </a>
     
@@ -78,8 +89,26 @@
             <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="3">
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/1.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">王小虎</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>加油</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -91,10 +120,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Home"
+                            title="首页"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
+                        <span class="sidebar-button-desc">首页</span>
                     </a>
             </li>
             
@@ -105,10 +134,10 @@
                             href="/all-categories"
                             
                             rel="noopener"
-                            title="Kategorien"
+                            title="分类"
                         >
                         <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Kategorien</span>
+                        <span class="sidebar-button-desc">分类</span>
                     </a>
             </li>
             
@@ -119,10 +148,10 @@
                             href="/all-tags"
                             
                             rel="noopener"
-                            title="Tags"
+                            title="标签"
                         >
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
+                        <span class="sidebar-button-desc">标签</span>
                     </a>
             </li>
             
@@ -185,10 +214,10 @@
                             href="/mail"
                             
                             rel="noopener"
-                            title="E-Mail"
+                            title="邮箱"
                         >
                         <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">E-Mail</span>
+                        <span class="sidebar-button-desc">邮箱</span>
                     </a>
             </li>
             
@@ -198,7 +227,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="3"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -216,7 +245,7 @@
         <div class="post-meta">
     <time datetime="2020-03-16T21:25:36+08:00">
 	
-		    16 Mar 2020
+		    3月 16, 2020
     	
     </time>
     
@@ -248,7 +277,7 @@
                     >
                         
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -258,7 +287,7 @@
                         aria-hidden="true"
                     >
                         
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -281,8 +310,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/mailto/index.html"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -294,8 +323,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/mailto/index.html"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -307,8 +336,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://plus.google.com/share?url=http://yoursite.com/mailto/index.html"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
+                    title="分享到 Google+"
+                    aria-label="分享到 Google+"
                 >
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
@@ -349,25 +378,37 @@
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-times"></i>
         </div>
         
+            <img id="about-card-picture" src="/assets/images/1.jpg" alt="作者的图片"/>
+        
             <h4 id="about-card-name">王小虎</h4>
         
-            <div id="about-card-bio"><p>author.bio</p>
+            <div id="about-card-bio"><p>加油</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>某公司菜鸟工程师</p>
 
             </div>
         
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                中国-深圳
+            </div>
         
     </div>
 </div>
