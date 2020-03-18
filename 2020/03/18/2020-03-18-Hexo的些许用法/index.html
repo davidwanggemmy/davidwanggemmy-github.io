@@ -6,28 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="david的空间">
-    <title>Typora 常用快捷键 - david的空间</title>
+    <title>Hexo的些许用法 - david的空间</title>
     <meta name="author" content="王小虎">
     
     
         <link rel="icon" href="http://yoursite.com/assets/images/cover.jpg">
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"1.jpg"},"articleBody":"记录一些typora的快捷键，以后方便用，顺便测试一下博客文章的用法。\n\n\nSource Mode1Ctrl+&#x2F; 切换源码模式\n\nTable of Contents1[toc] 目录\n\nCode Block1​&#96;&#96;&#96;回车 ctrl+alt+f\n\nCodes1&#96;code&#96; ctrl+shit+&#96;\n\nHeader(标题)123# 1号标题  ctrl+1### 3号标题 ctrl+3######6号标题 ctrl+6\n\nList1231. 有序列表 输入数字+“.”之后输入空格* or + or - 无序列表   输入-之后输入空格- [ ] 任务列表  -[空格]空格 文字\n\nBold1**加粗** or __加粗__  or ctrl+b\n\nItalic1*斜体* or ctrl+i\n\nLine Break1shift+enter or &lt;br&#x2F;&gt; 换行\n\nHorizontal Rules1*** 水平线\n\nStrike Through1~~删除线~~ or alt+shift+5\n\nTable1ctrl+t 表格\n\nBlock Quote1&gt; or ctrl+shift+q 引用\n\nImage1直接拖动到指定位置即可或者ctrl+shift+i 插入图片\n\nHyper Link1ctrl+k  超链接\n\nComment1&#x2F;**这是注释*&#x2F;\n\nUnderline1&lt;u&gt;下划线&lt;u&#x2F;&gt; or ctrl+u\n\nHighlight1&#x3D;&#x3D;高亮显示&#x3D;&#x3D;\n\nEmoji1:smile: 表情\n\n选中当前行1ctrl+L\n\n选中单词1ctrl+d\n\n关闭窗口1ctrl+w\n\n跳转到文章开头1ctrl+home\n\n跳转到文章结尾1ctrl+end\n\n替换1ctrl+h\n\n搜索1ctrl+f\n\n向前一个列表缩进1shift+tab\n\n向后一个列表缩进1tab\n\n\n","dateCreated":"2020-03-18T14:33:34+08:00","dateModified":"2020-03-18T16:51:08+08:00","datePublished":"2020-03-18T14:33:34+08:00","description":"记录一些typora的快捷键，以后方便用，顺便测试一下博客文章的用法。","headline":"Typora 常用快捷键","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"},"publisher":{"@type":"Organization","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"1.jpg","logo":{"@type":"ImageObject","url":"1.jpg"}},"url":"http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/","keywords":"Typora"}</script>
-    <meta name="description" content="记录一些typora的快捷键，以后方便用，顺便测试一下博客文章的用法。">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"1.jpg"},"articleBody":"写了一点hexo中常用的用法\n\n\nHexo的些许用法1.配置分类、标签、存档:12345$  hexo new page &quot;all-categories&quot;$  hexo new page &quot;all-tags&quot;$  hexo new page &quot;all-archives&quot;\n\n修改生成的三个模板文件source/文件夹下\nindex.md\n1234---title: &quot;all-tags&quot;layout: &quot;all-tags&quot;comments: false\n\n2.RSS1$  npm install hexo-generator-feed --save\n\n在根目录_config.yml文件内添加以下代码:\n1234feed:\ttype: atom\tpath: atom.xml\tlimit: 20\n\n3.侧栏添加新的项目在主题的_config.yml文件中 解注释 掉想要的功能。\n4.显示摘要\n要想首页每篇文章只显示摘要需要在每篇文章的内容开始之前写上以下内容：\ntitle.md\n12我是摘要内容--此方法只在首页显示摘要。&lt;!-- excerpt --&gt;\n\n或者\ntitle.md\n12我是摘要内容--此方法除了在首页显示摘要还会在文章页的文章最前面显示一遍。   &lt;!-- more --&gt;\n\n4.文章的属性配置title.md\n123456789101112131415161718title: 博客建设分享及博客计划date: 2017-01-02 17:12:21categories: &#39;建站&#39;tags: [&#39;计划&#39;,&#39;建站&#39;,&#39;Hexo&#39;]keywords:- &#39;博客&#39;- hexo- &#39;建站&#39;clearReading: true  &#x2F;&#x2F;在文章页隐藏侧栏，以更好地阅读。thumbnailImage: http:&#x2F;&#x2F;upyun.geekap.com&#x2F;gitblog-img&#x2F;car-6-140.jpg  &#x2F;&#x2F;首页文章列表显示的缩略图thumbnailImagePosition: left  &#x2F;&#x2F;缩略图显示的位置，上下左右都可以autoThumbnailImage: true  &#x2F;&#x2F; 开启后如果没有设置缩略图，会自动设置为图片画廊里的第一张，或者其他文章的图。metaAlignment: center  &#x2F;&#x2F;文章页图片上的文字居中显示coverImage: http:&#x2F;&#x2F;upyun.geekap.com&#x2F;gitblog-img&#x2F;cover-v1.2.0.jpg  &#x2F;&#x2F;文章页最上面的那个大图coverCaption: &quot;Hexo建站分享&quot;  &#x2F;&#x2F;大图下面的小标题coverMeta: in  &#x2F;&#x2F;图片上的文字显示在图片上，或者显示在图片外面coverSize: full  &#x2F;&#x2F;大图显示的尺寸，full是全屏展示comments: false  &#x2F;&#x2F;评论功能是否开启","dateCreated":"2020-03-18T17:18:55+08:00","dateModified":"2020-03-18T17:22:20+08:00","datePublished":"2020-03-18T17:18:55+08:00","description":"写了一点hexo中常用的用法","headline":"Hexo的些许用法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"},"publisher":{"@type":"Organization","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"1.jpg","logo":{"@type":"ImageObject","url":"1.jpg"}},"url":"http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/","keywords":"Hexo"}</script>
+    <meta name="description" content="写了一点hexo中常用的用法">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Typora 常用快捷键">
-<meta property="og:url" content="http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/index.html">
+<meta property="og:title" content="Hexo的些许用法">
+<meta property="og:url" content="http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/index.html">
 <meta property="og:site_name" content="david的空间">
-<meta property="og:description" content="记录一些typora的快捷键，以后方便用，顺便测试一下博客文章的用法。">
+<meta property="og:description" content="写了一点hexo中常用的用法">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/home/wang/Pictures/4946.jpg">
-<meta property="article:published_time" content="2020-03-18T06:33:34.000Z">
-<meta property="article:modified_time" content="2020-03-18T08:51:08.218Z">
+<meta property="article:published_time" content="2020-03-18T09:18:55.000Z">
+<meta property="article:modified_time" content="2020-03-18T09:22:20.402Z">
 <meta property="article:author" content="王小虎">
-<meta property="article:tag" content="Typora">
+<meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/home/wang/Pictures/4946.jpg">
     
     
         
@@ -241,12 +239,12 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Typora 常用快捷键
+            Hexo的些许用法
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-03-18T14:33:34+08:00">
+    <time datetime="2020-03-18T17:18:55+08:00">
 	
 		    3月 18, 2020
     	
@@ -266,67 +264,32 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>记录一些typora的快捷键，以后方便用，顺便测试一下博客文章的用法。</p>
+            <p>写了一点hexo中常用的用法</p>
 <a id="more"></a>
 
-<h4 id="Source-Mode"><a href="#Source-Mode" class="headerlink" title="Source Mode"></a>Source Mode</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ctrl+&#x2F; 切换源码模式</span><br></pre></td></tr></table></figure>
+<h3 id="Hexo的些许用法"><a href="#Hexo的些许用法" class="headerlink" title="Hexo的些许用法"></a>Hexo的些许用法</h3><h3 id="1-配置分类、标签、存档"><a href="#1-配置分类、标签、存档" class="headerlink" title="1.配置分类、标签、存档:"></a><strong>1.配置分类、标签、存档:</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$  hexo new page &quot;all-categories&quot;</span><br><span class="line"></span><br><span class="line">$  hexo new page &quot;all-tags&quot;</span><br><span class="line"></span><br><span class="line">$  hexo new page &quot;all-archives&quot;</span><br></pre></td></tr></table></figure>
 
-<h4 id="Table-of-Contents"><a href="#Table-of-Contents" class="headerlink" title="Table of Contents"></a>Table of Contents</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[toc] 目录</span><br></pre></td></tr></table></figure>
+<p>修改生成的三个模板文件<code>source/</code>文件夹下</p>
+<p>index.md</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: &quot;all-tags&quot;</span><br><span class="line">layout: &quot;all-tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
 
-<h4 id="Code-Block"><a href="#Code-Block" class="headerlink" title="Code Block"></a>Code Block</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">​&#96;&#96;&#96;回车 ctrl+alt+f</span><br></pre></td></tr></table></figure>
+<h3 id="2-RSS"><a href="#2-RSS" class="headerlink" title="2.RSS"></a><strong>2.RSS</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
 
-<h4 id="Codes"><a href="#Codes" class="headerlink" title="Codes"></a>Codes</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#96;code&#96; ctrl+shit+&#96;</span><br></pre></td></tr></table></figure>
+<p>在根目录_config.yml文件内添加以下代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">feed:</span><br><span class="line">	type: atom</span><br><span class="line">	path: atom.xml</span><br><span class="line">	limit: 20</span><br></pre></td></tr></table></figure>
 
-<h4 id="Header-标题"><a href="#Header-标题" class="headerlink" title="Header(标题)"></a>Header(标题)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 1号标题  ctrl+1</span><br><span class="line">### 3号标题 ctrl+3</span><br><span class="line">######6号标题 ctrl+6</span><br></pre></td></tr></table></figure>
+<h3 id="3-侧栏添加新的项目"><a href="#3-侧栏添加新的项目" class="headerlink" title="3.侧栏添加新的项目"></a><strong>3.侧栏添加新的项目</strong></h3><p>在主题的<code>_config.yml</code>文件中 解注释 掉想要的功能。</p>
+<p><strong>4.显示摘要</strong></p>
+<p>要想首页每篇文章只显示摘要需要在每篇文章的内容开始之前写上以下内容：</p>
+<p>title.md</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我是摘要内容--此方法只在首页显示摘要。</span><br><span class="line">&lt;!-- excerpt --&gt;</span><br></pre></td></tr></table></figure>
 
-<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 有序列表 输入数字+“.”之后输入空格</span><br><span class="line">* or + or - 无序列表   输入-之后输入空格</span><br><span class="line">- [ ] 任务列表  -[空格]空格 文字</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<p>title.md</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我是摘要内容--此方法除了在首页显示摘要还会在文章页的文章最前面显示一遍。   </span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
 
-<h4 id="Bold"><a href="#Bold" class="headerlink" title="Bold"></a>Bold</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**加粗** or __加粗__  or ctrl+b</span><br></pre></td></tr></table></figure>
-
-<h4 id="Italic"><a href="#Italic" class="headerlink" title="Italic"></a>Italic</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*斜体* or ctrl+i</span><br></pre></td></tr></table></figure>
-
-<h4 id="Line-Break"><a href="#Line-Break" class="headerlink" title="Line Break"></a>Line Break</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shift+enter or &lt;br&#x2F;&gt; 换行</span><br></pre></td></tr></table></figure>
-
-<h4 id="Horizontal-Rules"><a href="#Horizontal-Rules" class="headerlink" title="Horizontal Rules"></a>Horizontal Rules</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*** 水平线</span><br></pre></td></tr></table></figure>
-
-<h4 id="Strike-Through"><a href="#Strike-Through" class="headerlink" title="Strike Through"></a>Strike Through</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~~删除线~~ or alt+shift+5</span><br></pre></td></tr></table></figure>
-
-<h4 id="Table"><a href="#Table" class="headerlink" title="Table"></a>Table</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+t 表格</span><br></pre></td></tr></table></figure>
-
-<h4 id="Block-Quote"><a href="#Block-Quote" class="headerlink" title="Block Quote"></a>Block Quote</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; or ctrl+shift+q 引用</span><br></pre></td></tr></table></figure>
-
-<h4 id="Image"><a href="#Image" class="headerlink" title="Image"></a>Image</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">直接拖动到指定位置即可或者ctrl+shift+i 插入图片</span><br></pre></td></tr></table></figure>
-
-<h4 id="Hyper-Link"><a href="#Hyper-Link" class="headerlink" title="Hyper Link"></a>Hyper Link</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+k  超链接</span><br></pre></td></tr></table></figure>
-
-<h4 id="Comment"><a href="#Comment" class="headerlink" title="Comment"></a>Comment</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**这是注释*&#x2F;</span><br></pre></td></tr></table></figure>
-
-<h4 id="Underline"><a href="#Underline" class="headerlink" title="Underline"></a>Underline</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;u&gt;下划线&lt;u&#x2F;&gt; or ctrl+u</span><br></pre></td></tr></table></figure>
-
-<h4 id="Highlight"><a href="#Highlight" class="headerlink" title="Highlight"></a>Highlight</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x3D;&#x3D;高亮显示&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
-
-<h4 id="Emoji"><a href="#Emoji" class="headerlink" title="Emoji"></a>Emoji</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:smile: 表情</span><br></pre></td></tr></table></figure>
-
-<h4 id="选中当前行"><a href="#选中当前行" class="headerlink" title="选中当前行"></a>选中当前行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+L</span><br></pre></td></tr></table></figure>
-
-<h4 id="选中单词"><a href="#选中单词" class="headerlink" title="选中单词"></a>选中单词</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+d</span><br></pre></td></tr></table></figure>
-
-<h4 id="关闭窗口"><a href="#关闭窗口" class="headerlink" title="关闭窗口"></a>关闭窗口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+w</span><br></pre></td></tr></table></figure>
-
-<h4 id="跳转到文章开头"><a href="#跳转到文章开头" class="headerlink" title="跳转到文章开头"></a>跳转到文章开头</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+home</span><br></pre></td></tr></table></figure>
-
-<h4 id="跳转到文章结尾"><a href="#跳转到文章结尾" class="headerlink" title="跳转到文章结尾"></a>跳转到文章结尾</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+end</span><br></pre></td></tr></table></figure>
-
-<h4 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+h</span><br></pre></td></tr></table></figure>
-
-<h4 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl+f</span><br></pre></td></tr></table></figure>
-
-<h4 id="向前一个列表缩进"><a href="#向前一个列表缩进" class="headerlink" title="向前一个列表缩进"></a>向前一个列表缩进</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shift+tab</span><br></pre></td></tr></table></figure>
-
-<h4 id="向后一个列表缩进"><a href="#向后一个列表缩进" class="headerlink" title="向后一个列表缩进"></a>向后一个列表缩进</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tab</span><br></pre></td></tr></table></figure>
-
-<p><img src="/home/wang/Pictures/4946.jpg" alt=""></p>
-
+<h3 id="4-文章的属性配置"><a href="#4-文章的属性配置" class="headerlink" title="4.文章的属性配置"></a><strong>4.文章的属性配置</strong></h3><p>title.md</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">title: 博客建设分享及博客计划</span><br><span class="line">date: 2017-01-02 17:12:21</span><br><span class="line">categories: &#39;建站&#39;</span><br><span class="line">tags: [&#39;计划&#39;,&#39;建站&#39;,&#39;Hexo&#39;]</span><br><span class="line">keywords:</span><br><span class="line">- &#39;博客&#39;</span><br><span class="line">- hexo</span><br><span class="line">- &#39;建站&#39;</span><br><span class="line">clearReading: true  &#x2F;&#x2F;在文章页隐藏侧栏，以更好地阅读。</span><br><span class="line">thumbnailImage: http:&#x2F;&#x2F;upyun.geekap.com&#x2F;gitblog-img&#x2F;car-6-140.jpg  &#x2F;&#x2F;首页文章列表显示的缩略图</span><br><span class="line">thumbnailImagePosition: left  &#x2F;&#x2F;缩略图显示的位置，上下左右都可以</span><br><span class="line">autoThumbnailImage: true  &#x2F;&#x2F; 开启后如果没有设置缩略图，会自动设置为图片画廊里的第一张，或者其他文章的图。</span><br><span class="line">metaAlignment: center  &#x2F;&#x2F;文章页图片上的文字居中显示</span><br><span class="line">coverImage: http:&#x2F;&#x2F;upyun.geekap.com&#x2F;gitblog-img&#x2F;cover-v1.2.0.jpg  &#x2F;&#x2F;文章页最上面的那个大图</span><br><span class="line">coverCaption: &quot;Hexo建站分享&quot;  &#x2F;&#x2F;大图下面的小标题</span><br><span class="line">coverMeta: in  &#x2F;&#x2F;图片上的文字显示在图片上，或者显示在图片外面</span><br><span class="line">coverSize: full  &#x2F;&#x2F;大图显示的尺寸，full是全屏展示</span><br><span class="line">comments: false  &#x2F;&#x2F;评论功能是否开启</span><br></pre></td></tr></table></figure>
             
 
 
@@ -337,7 +300,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Typora/" rel="tag">Typora</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/Hexo/" rel="tag">Hexo</a>
 
             </div>
         
@@ -347,25 +310,25 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
-                    data-tooltip="Hexo的些许用法"
-                    aria-label="上一篇: Hexo的些许用法"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    data-tooltip="Typora 常用快捷键"
+                    aria-label="下一篇: Typora 常用快捷键"
+                >
+                    
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
@@ -388,7 +351,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                     title="分享到 Facebook"
                     aria-label="分享到 Facebook"
                 >
@@ -401,7 +364,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -414,7 +377,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                     title="分享到 Google+"
                     aria-label="分享到 Google+"
                 >
@@ -459,25 +422,25 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
-                    data-tooltip="Hexo的些许用法"
-                    aria-label="上一篇: Hexo的些许用法"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    data-tooltip="Typora 常用快捷键"
+                    aria-label="下一篇: Typora 常用快捷键"
+                >
+                    
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
@@ -500,7 +463,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                     title="分享到 Facebook"
                     aria-label="分享到 Facebook"
                 >
@@ -513,7 +476,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -526,7 +489,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                     title="分享到 Google+"
                     aria-label="分享到 Google+"
                 >
@@ -560,7 +523,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                         aria-label="分享到 Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
@@ -573,7 +536,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                         aria-label="分享到 Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
@@ -586,7 +549,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/03/18/2020-03-18-Typora-%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/03/18/2020-03-18-Hexo%E7%9A%84%E4%BA%9B%E8%AE%B8%E7%94%A8%E6%B3%95/"
                         aria-label="分享到 Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
