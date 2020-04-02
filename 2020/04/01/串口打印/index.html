@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="david的空间">
+    <title>串口打印 - david的空间</title>
+    <meta name="author" content="王小虎">
+    
+    
+        <link rel="icon" href="http://yoursite.com/assets/images/cover.jpg">
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"2.jpg"},"articleBody":"有些软件很喜欢用，推荐给大家\n串口打印\n\n\n串口打印1.设置串口参数2.重定向3.勾选use mcrolib初始化串口\n1.设置串口参数\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384#include &quot;stm32f4xx.h&quot;#include &quot;delay.h&quot;#include &lt;stdio.h&gt;void UART4_Init(void)&#123;\t&#x2F;&#x2F;%%(1)变量定义：GPIO初始化类型，USART初始化类型，NVIC初始化类型  GPIO_InitTypeDef   GPIO_InitStructure;\tUSART_InitTypeDef  USART_InitStructure;\tNVIC_InitTypeDef   NVIC_InitStructure;\t  &#x2F;&#x2F;clock enable\tRCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE); &#x2F;&#x2F;使能GPIOA时钟\tRCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4,ENABLE);&#x2F;&#x2F;使能USART1时钟\t\t&#x2F;&#x2F;%%(3)GPIO口到串口 对应引脚复用映射\tGPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_UART4);\tGPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_UART4);\t\t&#x2F;* GPIO10 enable  (TX)\t   Configure output pins *&#x2F;\tGPIO_InitStructure.GPIO_Pin &#x3D; GPIO_Pin_10;\tGPIO_InitStructure.GPIO_Speed &#x3D; GPIO_Speed_50MHz; &#x2F;&#x2F;IO口速度为50MHz\tGPIO_InitStructure.GPIO_Mode &#x3D; GPIO_Mode_AF;\tGPIO_InitStructure.GPIO_OType &#x3D; GPIO_OType_PP;    &#x2F;&#x2F; 复用推挽输出\tGPIO_InitStructure.GPIO_PuPd &#x3D; GPIO_PuPd_NOPULL;\tGPIO_Init(GPIOC, &amp;GPIO_InitStructure);\t\t&#x2F;* GPIO11 enable  (RX)\t   Configure input pins *&#x2F;\tGPIO_InitStructure.GPIO_Pin &#x3D; GPIO_Pin_11;\tGPIO_InitStructure.GPIO_Speed &#x3D; GPIO_Speed_50MHz;\tGPIO_InitStructure.GPIO_Mode &#x3D; GPIO_Mode_IN; \tGPIO_InitStructure.GPIO_OType &#x3D; GPIO_OType_OD;\tGPIO_Init(GPIOC, &amp;GPIO_InitStructure);  &#x2F;&#x2F;UART4 initialize settings\tUSART_InitStructure.USART_BaudRate &#x3D; 115200;&#x2F;&#x2F;波特率设置\tUSART_InitStructure.USART_HardwareFlowControl &#x3D; USART_HardwareFlowControl_None;&#x2F;&#x2F;无硬件数据流控制\tUSART_InitStructure.USART_Mode &#x3D; USART_Mode_Rx | USART_Mode_Tx;\t&#x2F;&#x2F;收发模式\tUSART_InitStructure.USART_Parity &#x3D; USART_Parity_No;&#x2F;&#x2F;无奇偶校验位\tUSART_InitStructure.USART_StopBits &#x3D; USART_StopBits_1;&#x2F;&#x2F;一个停止位\tUSART_InitStructure.USART_WordLength &#x3D; USART_WordLength_8b;&#x2F;&#x2F;字长为8位数据格式  USART_Init(UART4, &amp;USART_InitStructure); &#x2F;&#x2F;初始化串口\t&#x2F;&#x2F;USART4 enable  USART_Cmd(UART4, ENABLE);  &#x2F;&#x2F;使能串口\t\t&#x2F;&#x2F;%%(7)串口1清楚标志位\t&#x2F;&#x2F;USART_ClearFlag(UART4, USART_FLAG_RXNE);\t&#x2F;&#x2F;%%(8) 初始化USART4中断优先级\tUSART_ITConfig(UART4, USART_IT_RXNE, ENABLE);&#x2F;&#x2F;开启相关中断\tNVIC_InitStructure.NVIC_IRQChannel &#x3D; UART4_IRQn;\t\t&#x2F;&#x2F;串口 中断通道\tNVIC_InitStructure.NVIC_IRQChannelPreemptionPriority&#x3D;1; &#x2F;&#x2F;抢占优先级\tNVIC_InitStructure.NVIC_IRQChannelSubPriority &#x3D;1;\t\t&#x2F;&#x2F;子优先级\tNVIC_InitStructure.NVIC_IRQChannelCmd &#x3D; ENABLE;\t\t\t&#x2F;&#x2F;IRQ通道使能\tNVIC_Init(&amp;NVIC_InitStructure);\t&#x2F;&#x2F;根据指定的参数初始化VIC寄存器、&#125;int fputc(int ch, FILE *f)  &#123;    USART_SendData(UART4,ch);    while(USART_GetFlagStatus(UART4,USART_FLAG_TC)&#x3D;&#x3D;RESET);    return(ch);  &#125;  int fgetc(FILE *f)  &#123;    while (USART_GetFlagStatus(UART4, USART_FLAG_RXNE) &#x3D;&#x3D; RESET);    return (int)USART_ReceiveData(UART4);  &#125; void UART4_IRQHandler(void)&#123;\tu8 res;\t\tif(USART_GetITStatus(UART4,USART_IT_RXNE))&#123;\t\tres&#x3D;USART_ReceiveData(UART4);\t\tUSART_SendData(UART4,res);\t\t\t&#125;&#125;\n\n2.重定向\n1234567891011121314int fputc(int ch, FILE *f)  &#123;    USART_SendData(USART1,ch);    while(USART_GetFlagStatus(USART1,USART_FLAG_TC)==RESET);    return(ch);  &#125;  int fgetc(FILE *f)  &#123;    while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);    return (int)USART_ReceiveData(USART1);  &#125;\n\n\n\n3.勾选microLib\n魔术棒-&gt;target-&gt;microLib\n","dateCreated":"2020-04-01T17:39:45+08:00","dateModified":"2020-04-02T17:55:32+08:00","datePublished":"2020-04-01T17:39:45+08:00","description":"有些软件很喜欢用，推荐给大家\n串口打印","headline":"串口打印","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"},"publisher":{"@type":"Organization","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"2.jpg","logo":{"@type":"ImageObject","url":"2.jpg"}},"url":"http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/","keywords":"串口"}</script>
+    <meta name="description" content="有些软件很喜欢用，推荐给大家 串口打印">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="串口打印">
+<meta property="og:url" content="http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/index.html">
+<meta property="og:site_name" content="david的空间">
+<meta property="og:description" content="有些软件很喜欢用，推荐给大家 串口打印">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-01T09:39:45.000Z">
+<meta property="article:modified_time" content="2020-04-02T09:55:32.478Z">
+<meta property="article:author" content="王小虎">
+<meta property="article:tag" content="串口">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/2.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-ac17h5djwueihe9x7yyhmty26cbmugu3reqdhxfleewgtzhbxmb6jbfabvmw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/%20"
+            aria-label=""
+        >
+            david的空间
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打开链接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/2.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/2.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">王小虎</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>加油</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://www.baidu.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="baidu"
+                        >
+                        <i class="sidebar-button-icon fab fa-searchengin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">baidu</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="google"
+                        >
+                        <i class="sidebar-button-icon fab fa-google" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">google</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mail"
+                            
+                            rel="noopener"
+                            title="邮箱"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            串口打印
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-04-01T17:39:45+08:00">
+	
+		    4月 01, 2020
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/%E7%A1%AC%E4%BB%B6%E6%96%87%E6%A1%A3/">硬件文档</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>有些软件很喜欢用，推荐给大家</p>
+<p>串口打印</p>
+<a id="more"></a>
+
+<p>串口打印<br>1.设置串口参数<br>2.重定向<br>3.勾选use mcrolib<br>初始化串口</p>
+<p>1.设置串口参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;stm32f4xx.h&quot;</span><br><span class="line">#include &quot;delay.h&quot;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void UART4_Init(void)&#123;</span><br><span class="line">	&#x2F;&#x2F;%%(1)变量定义：GPIO初始化类型，USART初始化类型，NVIC初始化类型</span><br><span class="line">  GPIO_InitTypeDef   GPIO_InitStructure;</span><br><span class="line">	USART_InitTypeDef  USART_InitStructure;</span><br><span class="line">	NVIC_InitTypeDef   NVIC_InitStructure;</span><br><span class="line">	</span><br><span class="line">  &#x2F;&#x2F;clock enable</span><br><span class="line">	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE); &#x2F;&#x2F;使能GPIOA时钟</span><br><span class="line">	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4,ENABLE);&#x2F;&#x2F;使能USART1时钟</span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;%%(3)GPIO口到串口 对应引脚复用映射</span><br><span class="line">	GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_UART4);</span><br><span class="line">	GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_UART4);</span><br><span class="line">	</span><br><span class="line">	&#x2F;* GPIO10 enable  (TX)</span><br><span class="line">	   Configure output pins *&#x2F;</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin &#x3D; GPIO_Pin_10;</span><br><span class="line">	GPIO_InitStructure.GPIO_Speed &#x3D; GPIO_Speed_50MHz; &#x2F;&#x2F;IO口速度为50MHz</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode &#x3D; GPIO_Mode_AF;</span><br><span class="line">	GPIO_InitStructure.GPIO_OType &#x3D; GPIO_OType_PP;    &#x2F;&#x2F; 复用推挽输出</span><br><span class="line">	GPIO_InitStructure.GPIO_PuPd &#x3D; GPIO_PuPd_NOPULL;</span><br><span class="line">	GPIO_Init(GPIOC, &amp;GPIO_InitStructure);</span><br><span class="line">	</span><br><span class="line">	&#x2F;* GPIO11 enable  (RX)</span><br><span class="line">	   Configure input pins *&#x2F;</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin &#x3D; GPIO_Pin_11;</span><br><span class="line">	GPIO_InitStructure.GPIO_Speed &#x3D; GPIO_Speed_50MHz;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode &#x3D; GPIO_Mode_IN; </span><br><span class="line">	GPIO_InitStructure.GPIO_OType &#x3D; GPIO_OType_OD;</span><br><span class="line">	GPIO_Init(GPIOC, &amp;GPIO_InitStructure);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;UART4 initialize settings</span><br><span class="line">	USART_InitStructure.USART_BaudRate &#x3D; 115200;&#x2F;&#x2F;波特率设置</span><br><span class="line">	USART_InitStructure.USART_HardwareFlowControl &#x3D; USART_HardwareFlowControl_None;&#x2F;&#x2F;无硬件数据流控制</span><br><span class="line">	USART_InitStructure.USART_Mode &#x3D; USART_Mode_Rx | USART_Mode_Tx;	&#x2F;&#x2F;收发模式</span><br><span class="line">	USART_InitStructure.USART_Parity &#x3D; USART_Parity_No;&#x2F;&#x2F;无奇偶校验位</span><br><span class="line">	USART_InitStructure.USART_StopBits &#x3D; USART_StopBits_1;&#x2F;&#x2F;一个停止位</span><br><span class="line">	USART_InitStructure.USART_WordLength &#x3D; USART_WordLength_8b;&#x2F;&#x2F;字长为8位数据格式</span><br><span class="line">  USART_Init(UART4, &amp;USART_InitStructure); &#x2F;&#x2F;初始化串口</span><br><span class="line">	&#x2F;&#x2F;USART4 enable</span><br><span class="line">  USART_Cmd(UART4, ENABLE);  &#x2F;&#x2F;使能串口</span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;%%(7)串口1清楚标志位</span><br><span class="line">	&#x2F;&#x2F;USART_ClearFlag(UART4, USART_FLAG_RXNE);</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;%%(8) 初始化USART4中断优先级</span><br><span class="line"></span><br><span class="line">	USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);&#x2F;&#x2F;开启相关中断</span><br><span class="line">	NVIC_InitStructure.NVIC_IRQChannel &#x3D; UART4_IRQn;		&#x2F;&#x2F;串口 中断通道</span><br><span class="line">	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority&#x3D;1; &#x2F;&#x2F;抢占优先级</span><br><span class="line">	NVIC_InitStructure.NVIC_IRQChannelSubPriority &#x3D;1;		&#x2F;&#x2F;子优先级</span><br><span class="line">	NVIC_InitStructure.NVIC_IRQChannelCmd &#x3D; ENABLE;			&#x2F;&#x2F;IRQ通道使能</span><br><span class="line">	NVIC_Init(&amp;NVIC_InitStructure);	&#x2F;&#x2F;根据指定的参数初始化VIC寄存器、</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">int fputc(int ch, FILE *f)  </span><br><span class="line">&#123;  </span><br><span class="line">  USART_SendData(UART4,ch);  </span><br><span class="line">  while(USART_GetFlagStatus(UART4,USART_FLAG_TC)&#x3D;&#x3D;RESET);  </span><br><span class="line">  return(ch);  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int fgetc(FILE *f)  </span><br><span class="line">&#123;  </span><br><span class="line">  while (USART_GetFlagStatus(UART4, USART_FLAG_RXNE) &#x3D;&#x3D; RESET);  </span><br><span class="line"></span><br><span class="line">  return (int)USART_ReceiveData(UART4);  </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void UART4_IRQHandler(void)&#123;</span><br><span class="line">	u8 res;</span><br><span class="line">	</span><br><span class="line">	if(USART_GetITStatus(UART4,USART_IT_RXNE))&#123;</span><br><span class="line">		res&#x3D;USART_ReceiveData(UART4);</span><br><span class="line">		USART_SendData(UART4,res);</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.重定向</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">int fputc(int ch, FILE *f)  </span><br><span class="line">&#123;  </span><br><span class="line">  USART_SendData(USART1,ch);  </span><br><span class="line">  <span class="keyword">while</span>(USART_GetFlagStatus(USART1,USART_FLAG_TC)==RESET);  </span><br><span class="line">  <span class="keyword">return</span>(ch);  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int fgetc(FILE *f)  </span><br><span class="line">&#123;  </span><br><span class="line">  <span class="keyword">while</span> (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (int)USART_ReceiveData(USART1);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.勾选microLib</p>
+<p>魔术棒-&gt;target-&gt;microLib</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/%E4%B8%B2%E5%8F%A3/" rel="tag">串口</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    data-tooltip="GPIO工作原理"
+                    aria-label="上一篇: GPIO工作原理"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/01/%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"
+                    data-tooltip="串口通信基本原理"
+                    aria-label="下一篇: 串口通信基本原理"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    title="分享到 Google+"
+                    aria-label="分享到 Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 王小虎. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    data-tooltip="GPIO工作原理"
+                    aria-label="上一篇: GPIO工作原理"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/01/%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"
+                    data-tooltip="串口通信基本原理"
+                    aria-label="下一篇: 串口通信基本原理"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    title="分享到 Google+"
+                    aria-label="分享到 Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                        aria-label="分享到 Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/2.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">王小虎</h4>
+        
+            <div id="about-card-bio"><p>加油</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>某公司菜鸟工程师</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                中国-深圳
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-kyzkgm44bx48qjoejfpsgadm6lxse2nqnlpdldqdpbl9bktwxoflbh77uqhx.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+
+
+
+    </body>
+</html>

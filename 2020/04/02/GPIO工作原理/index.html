@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="david的空间">
+    <title>GPIO工作原理 - david的空间</title>
+    <meta name="author" content="王小虎">
+    
+    
+        <link rel="icon" href="http://yoursite.com/assets/images/cover.jpg">
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"2.jpg"},"articleBody":"GPIO工作原理\n\n\nGPIO工作原理GPIO是通用I/O的缩写，其功能类似于8051的p0-p3。通过程序控制，用户可以自由使用插针。Pin可根据实际情况用作一般输入（GPI）或一般输出（GPO）或一般输入输出（GPIO），如CLK发生器、芯片选择等。对于输入，Pin电位可通过读取寄存器来确定；对于输出，Pin Pin可输出高电位或写入寄存器来降低电位；对于其他特殊功能，还有其他寄存器来控制它们。\n扩展资料：GPIO的优点(端口扩展器)：\n1、低功耗：GPIO具有较低的功耗（约1μa，μC的工作电流为100μa）。\n2、集成IIC从机接口：GPIO内置IIC从机接口，即使在待机状态下也能全速工作。\n3、小包装：GPIO设备提供最小的包装尺寸-3毫米x 3毫米QFN！\n4、低成本：您不必为不使用的功能付费。\n5、快速启动：不需要额外的代码、文档或维护。\n6、灵活的光控制：内置多通道高分辨率PWM输出。\n1.1 GPIO工作方式4种输入模式：​    输入浮空\n​    输入上拉\n​    输入下拉\n​    模拟输入\n4种输出模式：   开漏输出(带上拉或者下拉)\n   开漏复用功能(带上拉或者下拉)\n   推挽式输出(带上拉或者下拉)\n   推挽式复用功能(带上拉或者下拉)\n4种最大输出速度：​    -2MHZ\n​    -25MHz\n​    -50MHz\n​    -100MHz\n  8种工作模式的区别：STM32八种IO口模式区别.pdf\n推挽输出：可以输出强高低电平，连接数字器件 \n开漏输出：只可以输出强低电平，高电平得靠外部电阻拉高。输出端相当于三极管的集电极. 要得到高电平状态需要上拉电阻才行. 适合于做电流型的驱动,其吸收电流的能力相对强(一般20ma以内)\n每组**GPIO****端口的寄存器包括：4个32位配置寄存器:一个端口模式寄存器（GPIOx_MODER）\n一个端口输出类型寄存器(GPIOx_OTYPER)\n一个端口输出速度寄存器（GPIOx_OSPEEDR)\n一个端口上拉下拉寄存器（GPIOx_PUPDR)\n2个32位数据寄存器:一个端口输入数据寄存器（GPIOx_IDR）\n一个端口输出数据寄存器（GPIOx_ODR)\n一个端口置位/复位寄存器（GPIOx_BSRR)\n一个端口配置锁存寄存器（GPIOx_LCKR)\n两个复位功能寄存器（低位GPIOx_AFRL &amp; GPIOx_AFRH)\n如果配置一个IO口需要2个位，那么刚好32位寄存器配置一组IO口16个IO口如果配置一个IO口只需要1个位，一般高16位保留BSRR寄存器32位分为低16位BSRRL和高16位BSRRH，BSRRL配置一组IO口的16个IO口的置位状态（1），BSRRH配置复位状态（0）。\n","dateCreated":"2020-04-02T17:32:45+08:00","dateModified":"2020-04-02T17:53:41+08:00","datePublished":"2020-04-02T17:32:45+08:00","description":"GPIO工作原理","headline":"GPIO工作原理","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"},"publisher":{"@type":"Organization","name":"王小虎","sameAs":["https://github.com/","http://www.baidu.com","https://www.google.com/","/mail"],"image":"2.jpg","logo":{"@type":"ImageObject","url":"2.jpg"}},"url":"http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/","keywords":"串口"}</script>
+    <meta name="description" content="GPIO工作原理">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="GPIO工作原理">
+<meta property="og:url" content="http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="david的空间">
+<meta property="og:description" content="GPIO工作原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-02T09:32:45.000Z">
+<meta property="article:modified_time" content="2020-04-02T09:53:41.432Z">
+<meta property="article:author" content="王小虎">
+<meta property="article:tag" content="串口">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/2.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-ac17h5djwueihe9x7yyhmty26cbmugu3reqdhxfleewgtzhbxmb6jbfabvmw.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/%20"
+            aria-label=""
+        >
+            david的空间
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打开链接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/2.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/2.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">王小虎</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>加油</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://www.baidu.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="baidu"
+                        >
+                        <i class="sidebar-button-icon fab fa-searchengin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">baidu</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="google"
+                        >
+                        <i class="sidebar-button-icon fab fa-google" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">google</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mail"
+                            
+                            rel="noopener"
+                            title="邮箱"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            GPIO工作原理
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-04-02T17:32:45+08:00">
+	
+		    4月 02, 2020
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/%E7%A1%AC%E4%BB%B6%E6%96%87%E6%A1%A3/">硬件文档</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>GPIO工作原理</p>
+<a id="more"></a>
+
+<h2 id="GPIO工作原理"><a href="#GPIO工作原理" class="headerlink" title="GPIO工作原理"></a>GPIO工作原理</h2><p>GPIO是通用I/O的缩写，其功能类似于8051的p0-p3。通过程序控制，用户可以自由使用插针。Pin可根据实际情况用作一般输入（GPI）或一般输出（GPO）或一般输入输出（GPIO），如CLK发生器、芯片选择等。对于输入，Pin电位可通过读取寄存器来确定；对于输出，Pin Pin可输出高电位或写入寄存器来降低电位；对于其他特殊功能，还有其他寄存器来控制它们。</p>
+<h5 id="扩展资料："><a href="#扩展资料：" class="headerlink" title="扩展资料："></a><strong>扩展资料：</strong></h5><p>GPIO的优点(端口扩展器)：</p>
+<p>1、低功耗：GPIO具有较低的功耗（约1μa，μC的工作电流为100μa）。</p>
+<p>2、集成IIC从机接口：GPIO内置IIC从机接口，即使在待机状态下也能全速工作。</p>
+<p>3、小包装：GPIO设备提供最小的包装尺寸-3毫米x 3毫米QFN！</p>
+<p>4、低成本：您不必为不使用的功能付费。</p>
+<p>5、快速启动：不需要额外的代码、文档或维护。</p>
+<p>6、灵活的光控制：内置多通道高分辨率PWM输出。</p>
+<h3 id="1-1-GPIO工作方式"><a href="#1-1-GPIO工作方式" class="headerlink" title="1.1 GPIO工作方式"></a>1.1 GPIO工作方式</h3><h4 id="4种输入模式："><a href="#4种输入模式：" class="headerlink" title="4种输入模式："></a>4种输入模式：</h4><p>​    输入浮空</p>
+<p>​    输入上拉</p>
+<p>​    输入下拉</p>
+<p>​    模拟输入</p>
+<h4 id="4种输出模式："><a href="#4种输出模式：" class="headerlink" title="4种输出模式："></a>4种输出模式：</h4><p>   开漏输出(带上拉或者下拉)</p>
+<p>   开漏复用功能(带上拉或者下拉)</p>
+<p>   推挽式输出(带上拉或者下拉)</p>
+<p>   推挽式复用功能(带上拉或者下拉)</p>
+<h4 id="4种最大输出速度："><a href="#4种最大输出速度：" class="headerlink" title="4种最大输出速度："></a>4种最大输出速度：</h4><p>​    -2MHZ</p>
+<p>​    -25MHz</p>
+<p>​    -50MHz</p>
+<p>​    -100MHz</p>
+<p>  8种工作模式的区别：STM32八种IO口模式区别.pdf</p>
+<h5 id="推挽输出："><a href="#推挽输出：" class="headerlink" title="推挽输出："></a><strong>推挽输出：</strong></h5><p>可以输出强高低电平，连接数字器件 </p>
+<h5 id="开漏输出："><a href="#开漏输出：" class="headerlink" title="开漏输出："></a><strong>开漏输出：</strong></h5><p>只可以输出强低电平，高电平得靠外部电阻拉高。输出端相当于三极管的集电极. 要得到高电平状态需要上拉电阻才行. 适合于做电流型的驱动,其吸收电流的能力相对强(一般20ma以内)</p>
+<h3 id="每组-GPIO-端口的寄存器包括："><a href="#每组-GPIO-端口的寄存器包括：" class="headerlink" title="每组**GPIO****端口的寄存器包括："></a><strong>每组**</strong>GPIO****端口的寄存器包括：</h3><h5 id="4个32位配置寄存器"><a href="#4个32位配置寄存器" class="headerlink" title="4个32位配置寄存器:"></a>4个32位配置寄存器:</h5><p>一个端口模式寄存器（GPIOx_MODER）</p>
+<p>一个端口输出类型寄存器(GPIOx_OTYPER)</p>
+<p>一个端口输出速度寄存器（GPIOx_OSPEEDR)</p>
+<p>一个端口上拉下拉寄存器（GPIOx_PUPDR)</p>
+<h5 id="2个32位数据寄存器"><a href="#2个32位数据寄存器" class="headerlink" title="2个32位数据寄存器:"></a>2个32位数据寄存器:</h5><p>一个端口输入数据寄存器（GPIOx_IDR）</p>
+<p>一个端口输出数据寄存器（GPIOx_ODR)</p>
+<p>一个端口置位/复位寄存器（GPIOx_BSRR)</p>
+<p>一个端口配置锁存寄存器（GPIOx_LCKR)</p>
+<p>两个复位功能寄存器（低位GPIOx_AFRL &amp; GPIOx_AFRH)</p>
+<p><strong>如果配置一个IO口需要2个位，那么刚好32位寄存器配置一组IO口16个IO口</strong><br><strong>如果配置一个IO口只需要1个位，一般高16位保留</strong><br><strong>BSRR寄存器32位分为低16位BSRRL和高16位BSRRH，BSRRL配置一组IO口的16个IO口的置位状态（1），BSRRH配置复位状态（0）。</strong></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/%E4%B8%B2%E5%8F%A3/" rel="tag">串口</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    data-tooltip="串口打印"
+                    aria-label="下一篇: 串口打印"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    title="分享到 Google+"
+                    aria-label="分享到 Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 王小虎. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/01/%E4%B8%B2%E5%8F%A3%E6%89%93%E5%8D%B0/"
+                    data-tooltip="串口打印"
+                    aria-label="下一篇: 串口打印"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                    title="分享到 Google+"
+                    aria-label="分享到 Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/02/GPIO%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"
+                        aria-label="分享到 Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/2.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">王小虎</h4>
+        
+            <div id="about-card-bio"><p>加油</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>某公司菜鸟工程师</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                中国-深圳
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-kyzkgm44bx48qjoejfpsgadm6lxse2nqnlpdldqdpbl9bktwxoflbh77uqhx.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+
+
+
+    </body>
+</html>
